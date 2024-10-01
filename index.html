@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Number Guessing Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: antiquewhite;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        #output {
+            margin-top: 20px;
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            min-width: 300px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 200px;
+            margin-top: 10px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>The Number Guessing Game</h1>
+    <div id="output"></div>
+    <br>
+    <input type="number" id="guessInput" placeholder="Enter a number" min="1" max="100" />
+    <br>
+    <button onclick="makeGuess()">Submit Guess</button>
+    <br>
+    <button onclick="startGame()">Start Game</button>
+
+    <script>
+        let numberToGuess;
+        let attempts = 0;
+        let guessed = false;
+
+        function startGame() {
+            const output = document.getElementById('output');
+            output.innerHTML = ""; // Clear previous output
+            output.innerHTML += "Welcome to the Number Guessing Game!<br>Please select a number between 1 and 100.<br>";
+            numberToGuess = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            guessed = false;
+            document.getElementById('guessInput').value = ''; // Clear input field
+            document.getElementById('guessInput').focus(); // Focus on input field
+        }
+
+        function makeGuess() {
+            const output = document.getElementById('output');
+            const guess = parseInt(document.getElementById('guessInput').value, 10);
+            attempts++;
+
+            if (isNaN(guess) || guess < 1 || guess > 100) {
+                output.innerHTML += "Please guess a number within the range!<br>";
+            } else if (guess < numberToGuess) {
+                output.innerHTML += "Too low! Try again.<br>";
+                if (attempts > 5) {
+                    output.innerHTML += "Hint: You're quite far off!<br>";
+                }
+            } else if (guess > numberToGuess) {
+                output.innerHTML += "Too high! Try again.<br>";
+                if (attempts > 5) {
+                    output.innerHTML += "Hint: You're quite far off!<br>";
+                }
+            } else {
+                guessed = true;
+                output.innerHTML += `Congratulations! You've guessed the number ${numberToGuess} in ${attempts} attempts.<br>`;
+                if (playAgain) {
+                    const playAgain = confirm("Do you want to play again?");
+                    startGame(); // Restart the game
+                } else {
+                    output.innerHTML += "Thanks for playing!";
+                }
+            }
+
+            document.getElementById('guessInput').value = ''; // Clear input field
+            document.getElementById('guessInput').focus(); // Focus on input field
+        }
+    </script>
+</body>
+</html>
