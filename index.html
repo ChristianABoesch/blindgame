@@ -47,6 +47,10 @@
     <br>
     <button onclick="startGame()">Start Game</button>
 
+    <audio id="correctSound" src="audio/number_correctguess.wav"></audio>
+    <audio id="wrongSound1" src="audio/number_toolow.wav"></audio>
+    <audio id="wrongSound2" src="audio/number_toohigh.wav"></audio>
+
     <script>
         let numberToGuess;
         let attempts = 0;
@@ -70,19 +74,27 @@
 
             if (isNaN(guess) || guess < 1 || guess > 100) {
                 output.innerHTML += "Please guess a number within the range!<br>";
+                // Play wrong sound
+                document.getElementById('wrongSound').play();
             } else if (guess < numberToGuess) {
                 output.innerHTML += "Too low! Try again.<br>";
+                // Play wrong sound
+                document.getElementById('wrongSound1').play();
                 if (attempts > 5) {
-                    output.innerHTML += "Hint: You're quite far off!<br>";
+                    output.innerHTML += "Keep going, you got this<br>";
                 }
             } else if (guess > numberToGuess) {
                 output.innerHTML += "Too high! Try again.<br>";
+                // Play wrong sound
+                document.getElementById('wrongSound2').play();
                 if (attempts > 5) {
-                    output.innerHTML += "Hint: You're quite far off!<br>";
+                    output.innerHTML += "Keep going, you got this<br>";
                 }
             } else {
                 guessed = true;
                 output.innerHTML += `Congratulations! You've guessed the number ${numberToGuess} in ${attempts} attempts.<br>`;
+                // Play correct sound
+                document.getElementById('correctSound').play();
                 if (playAgain) {
                     const playAgain = confirm("Do you want to play again?");
                     startGame(); // Restart the game
